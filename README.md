@@ -14,6 +14,9 @@ ambiente de estudos.
 
 4. Coisas fora do ambiente de Algoritmos serão deletadas.
 
+5. Códigos que não fazem parte de atividades deverão ser
+postados na pasta "Algoritmos Avulsos".
+
 --------------------------------------------------------
 
 Esse espaço será utilizado para organizar e armazenar com maior segurança os algoritmos e programas que estamos desenvolvendo.
