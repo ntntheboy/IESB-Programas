@@ -34,7 +34,7 @@ int main () {
 		fflush(stdin);
     
 		printf("Digite o nome do aluno: ");
-		gets(turma[k].nome);
+		gets(turma[k].nome); // Serve para ler do teclado uma String.
 		
 		printf("Didigite a nota do aluno: ");
 		scanf("%f", &turma[k].nota);
