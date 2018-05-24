@@ -5,7 +5,7 @@ Seu programa deve realizar um processamento para calcular a média da turma.
 
 /*
 Serve para pegar o nome de um aluno e sua média final. Isso será repetido cinco vezes.
-*\
+*/
 
 #include<stdio.h>
 #include<stdlib.h>
