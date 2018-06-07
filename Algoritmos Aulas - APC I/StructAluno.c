@@ -4,7 +4,7 @@
 #include <conio.h>
 #include <locale.h>
 
-typedef struct ficha ALUNO;
+typedef struct ficha ALUNO; // No caso, ficha é o nome do struct; ALUNO é o tipo de variável (como se fosse inteiro, float...)
 
 struct ficha{
 	char nome[30];
