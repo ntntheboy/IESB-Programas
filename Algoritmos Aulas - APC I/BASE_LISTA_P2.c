@@ -6,7 +6,7 @@
 
 typedef struct ponto PONTO;
 struct ponto{
-	float x;    //abscissa
+	float x;        //abscissa
 	float y;	//ordenada
 };
 
