@@ -13,13 +13,12 @@ float dist(PONTO p1, PONTO p2, float r){
 	
 	float d = sqrt(pow( (p2.X - p1.X) , 2) + pow( (p2.Y - p1.Y) , 2 ));
 	
-	if (d <= r){
+	if (d == r){
 		return 1;
 	}
 	else{
 		return 0;
 	}
-  
 }
 
 float area(float ra){
@@ -48,7 +47,7 @@ int main(){
 	
 	system("cls");
 	
-	if(dist(a,b,raio) <= raio){
+	if(dist(a,b,raio) == 1){
 		printf("Está dentro do Círculo!\n");
 	}
 	else{
