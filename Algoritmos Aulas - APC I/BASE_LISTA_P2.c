@@ -16,7 +16,7 @@ float distancia(PONTO p1, PONTO p2){
 }
 
 
-main(){
+int main(){
 	setlocale(LC_ALL, "Portuguese");
 	
 	PONTO a, b;
