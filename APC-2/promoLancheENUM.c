@@ -10,13 +10,13 @@ nos dias de semana. Final de semana o preço é normal.
 #include <math.h>
 
 enum SEMANA{
-	DOMINGO,
-	SEGUNDA,
+	DOMINGO, // 0
+	SEGUNDA, // 1
 	TERCA,
-	QUARTA,
+	QUARTA, //...
 	QUINTA,
 	SEXTA,
-	SABADO
+	SABADO // 6
 	};
 
 int main(){
