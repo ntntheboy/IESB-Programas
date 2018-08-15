@@ -1,0 +1,11 @@
+PONTEIRO PARA FUNÇÕES
+Permite a construção de programas genéricos
+Sintaxe --> tipo_retornado (*nome_do_ponteiro) (lista de tipos)
+Exemplo: int (*ptr)(int, int) 
+Este ponteiro só pode apontar para funções que retornem um inteiro e 
+receba dois parâmetros inteiros.
+
+
+----------GENERALIZAÇÃO----------
+
+Quando você pode escolher qual função irá usar, através de ponteiro e uma outra função
