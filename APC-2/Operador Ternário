@@ -1,0 +1,7 @@
+O Operador Ternátio tem como característica a utilização da estrutura "If Else" em apenas uma linha.
+
+Estrutura: <PERGUNTA> ? <VERDADE> : <MENTIRA>
+
+Ex: (a>b) ? a : b
+
+A é maior que B? Se for, retorne A, senão, retorne B.
