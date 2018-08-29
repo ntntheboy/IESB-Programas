@@ -11,7 +11,7 @@ typedef struct _prod{
 
 main(){
 	prod* list = (prod*) malloc(N*sizeof(prod));       // Alocar memória necessária
-	if(list==NULL) return;                             // Se não houver a memória suficiente, o programa é encerrado
+	if(list==NULL) return 0;                             // Se não houver a memória suficiente, o programa é encerrado
 	setlocale(LC_ALL,"Portuguese");
 	int i;                                             // Contador
 	for(i=0;i<N;i++){                                  // Lê as variáveis para o membro "i"
