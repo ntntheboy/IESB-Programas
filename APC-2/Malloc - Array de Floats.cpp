@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define N 3                                                // Quantidade de membros da array
+#define N 3                                               // Quantidade de membros da array
 main(){
 	float* vec = (float*)malloc(N*sizeof(float));      // Aloca a memoória necessária
 	
