@@ -4,7 +4,7 @@
 main(){
 	float* vec = (float*)malloc(N*sizeof(float));      // Aloca a memoória necessária
 	
-	if(vec==NULL) return;                              // Se não houver memória suficiente, o programa é encerrado
+	if(vec==NULL) return 0;                              // Se não houver memória suficiente, o programa é encerrado
 	
 	float j = 0;                                       // Declara a soma dos floats
 	int i;                                             // Contador 
