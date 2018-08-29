@@ -1,13 +1,16 @@
 #include <stdlib.h>
 #include <stdio.h>
-#define N 3                                            // Quantidade de membros da array
+#define N 3                                                // Quantidade de membros da array
 main(){
-	float* vec = (float*)malloc(N*sizeof(float));      // Aloca a memo�ria necess�ria
+	float* vec = (float*)malloc(N*sizeof(float));      // Aloca a memoória necessária
+	
+	if(vec==NULL) return;                              // Se não houver memória suficiente, o programa é encerrado
+	
 	float j = 0;                                       // Declara a soma dos floats
 	int i;                                             // Contador 
-	for(i=0; i<N; i++){                                // L� os floats
+	for(i=0; i<N; i++){                                // Lê os floats
 		scanf("%f",&vec[i]);                           
-		j += vec[i];                                   // Soma os floats
+		j += vec[i];                               // Soma os floats
 	}
 	system("cls");
 	for(i=0; i<N; i++){                                // Exibe os floats
