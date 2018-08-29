@@ -1,12 +1,12 @@
 #include<stdlib.h>
 #include<stdio.h>
 #include<locale.h>
-#define N 3                                            // Quantidade de membros da array
+#define N 3                                                   // Quantidade de membros da array
 
 typedef struct _prod{
-		char name[30];                                     // Nome
-		int amount;                                        // Quantidade
-		float price;                                       // Preço
+		char name[30];                                // Nome
+		int amount;                                   // Quantidade
+		float price;                                  // Preço
 	}prod;
 
 main(){
