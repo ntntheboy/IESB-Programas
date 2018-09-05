@@ -1,0 +1,113 @@
+http://www.dontpad.com/2018-2/apc2/aula7
+
+
+EXERCÍCIO1
+Exemplos de entrada	Exemplos de saída
+7.0 5.0 7.0	     TRIANGULO ACUTANGULO
+                             TRIANGULO ISOSCELES
+
+6.0 6.0 10.0	     TRIANGULO OBTUSANGULO
+                             TRIANGULO ISOSCELES
+
+6.0 6.0 6.0	     TRIANGULO ACUTANGULO
+                             TRIANGULO EQUILATERO
+
+5.0 7.0 2.0	     NAO FORMA TRIANGULO
+
+6.0 8.0 10.0	    TRIANGULO RETANGULO
+
+Restrições
+
+O problema deve fazer uso de função que receba parâmetro(s) e retorne valor(es) (diferente da main) 
+
+
+
+
+
+
+
+EXERCÍCIO 2
+Matriz Quadrada
+/*escreva um algoritmo que leia um inteiro N (0 = N = 100), correspondente a ordem de uma matriz M de inteiros, e construa a matriz de acordo com o exemplo abaixo.
+
+Entrada
+A entrada consiste de vários inteiros, um valor por linha, correspondentes as ordens das matrizes a serem construídas. O final da entrada é marcado por um valor de ordem igual a zero (0).
+Saída
+
+Para cada inteiro da entrada imprima a matriz correspondente, de acordo com o exemplo. (os valores das matrizes devem ser formatados em um campo de tamanho 3 justificados à direita e separados por espaço. Após o último caractere de cada linha da matriz não deve haver espaços em branco. Após a impressão de cada matriz deve ser deixada uma linha em branco.
+
+Exemplo de Entrada
+
+Exemplo de Saída
+1  			1
+
+2		  	1   2
+			2   1
+			
+3		  	1   2   3
+  			2   1   2
+  			3   2   1
+4	  		1   2   3   4
+  			2   1   2   3
+  			3   2   1   2
+  			4   3   2   1
+
+5	  		1   2   3   4   5
+ 	 		2   1   2   3   4
+  			3   2   1   2   3
+  			4   3   2   1   2
+  			5   4   3   2   1
+
+0
+
+
+O problema deve fazer uso de matriz, função que receba parâmetro(s) e retorne valor(es) (diferente da main) sobre pena de perder 1 ponto na questão.*/
+
+
+
+
+
+
+
+EXERCÍCIO 3
+VOLEIBOL
+
+/*Um treinador de voleibol gostaria de manter estatísticas sobre sua equipe. 
+A cada jogo, seu auxiliar anota quantas tentativas de saques, bloqueios e 
+ataques cada um de seus jogadores fez, bem como quantos desses saques, bloqueios 
+e ataques tiveram sucesso (resultaram em pontos). Seu programa deve mostrar qual
+o percentual de saques, bloqueios e ataques do time todo tiveram sucesso.
+
+Entrada
+A entrada é dada pelo número de jogadores N (1 = N = 100), seguido pelo nome de 
+cada um dos jogadores. Abaixo do nome de cada jogador, seguem duas linhas com 
+três inteiros cada. Na primeira linha S, B e A (0 = S,B,A = 10000) 
+representam a quantidade de tentativas de saques, bloqueios e ataques e na segunda
+linha, S1, B1 e A1 (0 = S1 = S; 0 = B1 = B; 0 = A1 = A) com o número de saques, 
+bloqueios e ataques deste jogador que tiveram sucesso.
+
+Saída
+A saída deve conter o percentual total de saques, bloqueios e ataques do time todo que resultaram em pontos, conforme mostrado no exemplo.
+Exemplo de Entrada
+Exemplo de Saída
+3
+Renan
+10 20 12
+1 10 9
+Jonas
+8 7 1
+2 7 0
+Edson
+3 3 3
+1 2 3
+Pontos de Saque: 19.05 %.
+Pontos de Bloqueio: 63.33 %.
+Pontos de Ataque: 75.00 %.
+*/
+
+
+
+
+
+
+
