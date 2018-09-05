@@ -53,8 +53,8 @@ translate(char* text){                                   // Identifica os olhos,
 
 main(){
 	char text[90];
-	gets(text);			                                         // Lê a mensagem.
+	gets(text);			                 // Lê a mensagem.
 	system("cls");
-	printf("%i",translate(text));                            // Traduz a mensagem.
+	printf("%i",translate(text));                    // Traduz a mensagem.
 	getchar();
 }
