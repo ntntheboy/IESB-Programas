@@ -1,0 +1,587 @@
+#/*Síntese: Desenvolvido para Gerenciar as reuniões de uma empresa. 
+Autores: Emanoel, Matheus.
+Data da Ultima Modificação: 03/06/2019
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <locale.h>
+#define TAM 30
+
+struct funcionario{
+	
+	char nome[TAM];
+	int matricula;
+	int cargo;
+	char deletado;
+};
+
+struct reuniao{
+	int codigo;
+	int funcionarios[2];
+	char local[TAM];
+	int dia;
+	int mes;
+	int ano;
+	char tema[TAM];
+	char deletado;
+};
+
+/*struct atas{
+	
+};
+*/
+
+int menuFunc(void);
+int menuPrincipal(void);
+void recebeDadosFunc(struct funcionario*);
+int recebeMatFunc(void);
+void listar(void);
+void incluir(struct funcionario);
+void alterar(int);
+char validasn(void);
+void mostraFuncDados(struct funcionario);
+int consultaFunc(int);
+void excluiFunc(int);
+int lixeira(void);
+int listarLixeira(void);
+void excluirFisicamente(void);
+void restauraLixeira(void);
+int recebeCargo(void);
+void imprimeCargo(int);
+int verificaMat(int);
+int controleMenuFunc(int);
+void controleMenuPrincipal(int);
+int controleMenuReunioes(int);
+void marcarReuniao();
+void recebeDadosReuniao(struct reuniao *);
+void incluiReuniao(struct reuniao reu);
+void listarReunioes(void);
+void mostraReuDados(struct reuniao);
+void consultarReuniao(void);
+
+int main(void) {
+	FILE *arq;
+	struct funcionario func;
+	int opcao,matricula;
+	setlocale(LC_ALL,"Portuguese");
+	arq = fopen("funcionarios.dat", "ab");
+	if (arq == NULL){
+		printf("Erro de abertura do arquivo, cheque a permissão para criar arquivos no local.");
+	}else{
+		fclose(arq);
+		do{	
+			opcao=menuPrincipal();
+			controleMenuPrincipal(opcao);
+		}while(opcao!=0);
+	}
+	return 0;
+}
+
+int menuPrincipal(void){
+	int op;
+	do{
+		printf("\n-----------Menu Principal------------\n\n1-Menu de Funcionários\n2-Menu de Reuniões\n0-Sair\nDigite a Opção: ");
+		scanf("%d",&op);
+	}while(op<0 || op>3);
+}
+
+int menuFunc(void){
+	int op;
+	do{
+		printf("\n-----------Menu Funcionário------------\n\n1-Incluir Funcionarios\n2-Listar Funcionários\n3-Alterar dados de um funcionário\n4-Consultar Funcionário\n5-Excluir Funcionário\n6-Verificar Lixeira\n0-Retornar ao Menu Principal\nDigite a Opção: ");
+		scanf("%d",&op);
+	}while(op<0 || op>7);
+}
+
+void recebeDadosFunc(struct funcionario *func) {	
+	printf("Informe o nome do Funcionário: ");
+	fflush(stdin);
+	gets(func->nome);
+	func->cargo=recebeCargo();
+}
+int recebeMatFunc(void){
+	int mat;
+	printf("Digite a Matrícula do Funcionário: ");
+	scanf("%d",&mat);
+	return mat;
+}
+void incluir(struct funcionario func) {
+	FILE *arq;
+	arq = fopen("funcionarios.dat", "ab");
+	if (arq == NULL) {
+		printf("Erro de abertura do arquivo!");
+		return;
+	}
+	func.deletado = ' ';
+	fwrite(&func, sizeof(func), 1, arq);
+	fclose(arq);
+}
+
+void listar(void) {
+	struct funcionario func;
+	FILE *arq;
+	arq = fopen("funcionarios.dat", "rb");
+	if (arq == NULL) {
+		printf("Erro de abertura do arquivo!\n");
+		return;
+	}
+	while (fread(&func, sizeof(func), 1, arq))
+		if (func.deletado != '*')
+			mostraFuncDados(func);
+	fclose(arq);
+}
+
+void alterar(int mat){
+	FILE *arq;
+	struct funcionario func;
+	int achei=0;
+	
+	arq=fopen("funcionarios.dat","r+b");
+	if(arq ==NULL){
+		printf("Falha ao abrir o Arquivo.\n");
+		return;	
+	}
+	while(fread(&func,sizeof(struct funcionario),1,arq)){	
+		if(func.deletado != '*' && func.matricula == mat){
+			mostraFuncDados(func);
+			recebeDadosFunc(&func);
+			printf("Deseja confirmar a mudança? ");
+			if(validasn() == 'N'){
+				fclose(arq);
+				printf("Operação cancelada com Sucesso!");
+				return;	
+			}
+			fseek(arq, -(sizeof(struct funcionario)), SEEK_CUR);
+			fwrite(&func,sizeof(func),1,arq);
+			fseek(arq, 0, SEEK_CUR);
+			achei=1;
+			printf("\nFuncionário alterado com Sucesso!\n");		
+		}
+	}
+	if(!achei){
+		printf("Funcionário Buscado não foi encontrado\n");
+	}
+	fclose(arq);
+}
+
+char validasn(void){
+	char op;
+	do{
+		printf("(S = Sim ou N = Não): ");
+		op=toupper(getche());
+		if(op!= 'S' && op != 'N')
+			printf("\nOpção inválida digite apenas ");
+	}while(op!= 'S' && op != 'N');
+	return op;
+}
+
+void mostraFuncDados(struct funcionario func){
+	printf("Nome: %s\nMatricula:%d\n",func.nome,func.matricula);
+	imprimeCargo(func.cargo);	
+}
+
+int consultaFunc(int mat){
+	FILE *arq;
+	struct funcionario func;
+	int achei=0;
+	
+	arq=fopen("funcionarios.dat","rb");
+	if(arq ==NULL){
+		printf("Falha ao abrir o Arquivo.");
+		return 0;	//arquivo vazio
+	}
+	while(fread(&func,sizeof(struct funcionario),1,arq)){	
+		if(func.deletado != '*' && func.matricula == mat){
+			mostraFuncDados(func);
+			achei=1;		
+		}
+	}
+	if(!achei){
+		printf("Funcionário Buscado não foi encontrado\n");
+		return 0;
+	}
+	fclose(arq);
+	return 1;
+}
+
+void excluiFunc(int mat){
+	FILE *arq;
+	struct funcionario func;
+	int achei=0;	
+	arq=fopen("funcionarios.dat","r+b");
+	if(arq ==NULL){
+		printf("Falha ao abrir o Arquivo");
+		return;	
+	}
+	while(fread(&func,sizeof(struct funcionario),1,arq)){	
+		if(func.deletado != '*' && func.matricula == mat){
+			mostraFuncDados(func);
+			func.deletado='*';
+			printf("Deseja confirmar a exclusão? ");
+			if(validasn() == 'N'){
+				fclose(arq);
+				printf("Operação cancelada com Sucesso!");
+				return;	
+			}
+			fseek(arq, -(sizeof(struct funcionario)), SEEK_CUR);
+			fwrite(&func,sizeof(func),1,arq);
+			fseek(arq, 0, SEEK_CUR);
+			achei=1;
+			printf("\nFuncionário excluido com Sucesso!\n");		
+		}
+	}
+	
+	if(!achei){
+		printf("Funcionário Buscado não foi encontrado\n");
+	}
+	
+	fclose(arq);
+}
+
+int lixeira(void){
+	int op;
+	do{
+		printf("\n1-Esvaziar Lixeira\n2-Restaurar dados\n0-Retornar ao Menu Anterior\nDigite a Opção: ");
+		scanf("%d",&op);
+	}while(op<0 || op>2);
+	return op;
+}
+
+int listarLixeira(void) {
+	struct funcionario func;
+	int achei=0;
+	FILE *arq;
+	arq = fopen("funcionarios.dat", "rb");
+	if (arq == NULL) {
+		printf("Erro de abertura do arquivo!");
+		return;
+	}
+	while (fread(&func, sizeof(func), 1, arq))
+		if (func.deletado == '*'){
+			mostraFuncDados(func);
+			achei=1;
+		}
+	fclose(arq);
+	return achei;
+}
+
+void excluirFisicamente(void) {
+	struct funcionario func;
+	FILE *arqVelho, *arqNovo;
+	arqVelho = fopen("funcionarios.dat", "rb");
+	arqNovo = fopen("func.tmp", "wb");
+	if ((arqVelho == NULL) || (arqNovo == NULL)) {
+		printf("Erro de abertura do arquivo!");
+		return;
+	}
+	while (fread(&func, sizeof(func), 1, arqVelho))
+		if (func.deletado != '*')
+			fwrite(&func, sizeof(func), 1, arqNovo);
+	fclose(arqVelho);
+	fclose(arqNovo);
+	if(validasn() == 'N'){
+		printf("Operação cancelada com Sucesso!");
+		return;	
+	}
+	remove("funcionarios.dat");
+	rename("func.tmp", "funcionarios.dat");
+}
+
+void restauraLixeira(void){
+	FILE *arq;
+	struct funcionario func;	
+	arq=fopen("funcionarios.dat","r+b");
+	if(arq ==NULL){
+		printf("Falha ao abrir o Arquivo");
+		return;	
+	}
+	printf("Deseja confirmar a restauração de todos os itens na lixeira? ");
+	if(validasn() == 'N'){
+		fclose(arq);
+		printf("Operação cancelada com Sucesso!");
+		return;	
+	}
+	while(fread(&func,sizeof(struct funcionario),1,arq)){
+		if(func.deletado == '*'){
+			func.deletado=' ';
+			fseek(arq, -(sizeof(struct funcionario)), SEEK_CUR);
+			fwrite(&func,sizeof(func),1,arq);
+			fseek(arq, 0, SEEK_CUR);		
+		}
+	}
+	printf("\nDados da lixeira restaurados com Sucesso!\n");
+	fclose(arq);
+}
+int recebeCargo(void){
+	int carg;
+	do{
+		printf("Digite o cargo do funcionário (1- Gerente de Projetos, 2-Técnico, 3- Analista): ");
+		scanf("%d",&carg);
+	}while(carg<0 || carg>3);
+	return carg;
+}
+void imprimeCargo(int cargo){
+	switch(cargo){
+		case 1:{
+			printf("Cargo: Gerente de Projetos.\n");
+			break;
+		}
+		case 2:{
+			printf("Cargo: Técnico.\n");
+			break;
+		}
+		case 3:{
+			printf("Cargo: Analista.\n");
+			break;
+		}
+	}
+}
+
+int verificaMat(int mat){
+	FILE *arq;
+	struct funcionario func;
+	int achei=0;
+	
+	arq=fopen("funcionarios.dat","rb");
+	if(arq ==NULL){
+		printf("Falha ao abrir o Arquivo.");
+		return 0;	//arquivo vazio
+	}
+	while(fread(&func,sizeof(struct funcionario),1,arq)){	
+		if(func.deletado != '*' && func.matricula == mat){
+			achei=1;		
+		}
+	}
+	if(!achei){
+		fclose(arq);
+		return 0;
+	}
+	fclose(arq);
+	return 1;
+}
+
+int controleMenuFunc(int opcao){
+	struct funcionario func;
+	int matricula;
+	switch(opcao){	
+		case 1:{
+			system("CLS");
+			printf("\n-----------Inclusão------------\n");
+			func.matricula=recebeMatFunc();
+			if(verificaMat(func.matricula)!=0){
+				printf("\nMatricula já cadastrada.");
+				break;
+			}
+			recebeDadosFunc(&func);
+			incluir(func);
+			system("pause");
+			break;
+		}
+		
+		case 2:{
+			system("CLS");
+			printf("\n-----------Listagem------------\n");
+			listar();
+			system("pause");
+			break;
+		}
+		
+		case 3:{
+			system("CLS");
+			printf("\n-----------Alteração------------\n");
+			matricula=recebeMatFunc();
+			alterar(matricula);
+			system("pause");
+			break;
+		}
+		case 4:{
+			system("CLS");
+			printf("\n-----------Consulta------------\n");
+			matricula=recebeMatFunc();
+			consultaFunc(matricula);
+			system("pause");
+			break;
+		}
+		case 5:{
+			system("CLS");
+			printf("---------------Exclusão----------\n");
+			matricula=recebeMatFunc();
+			excluiFunc(matricula);
+			system("pause");
+			break;
+		}
+		case 6:{
+			system("CLS");
+			printf("\n-----------Lixeira------------\n");
+			if(listarLixeira() == 0){
+				printf("\nLixeira Vazia!\n");
+				break;
+			}
+			opcao=lixeira();
+			
+			switch(opcao){
+				case 1:{
+					excluirFisicamente();
+					break;
+				}
+				case 2:{
+					restauraLixeira();
+					break;
+				}
+				case 0:{
+					opcao=6;
+					break;
+				}
+			}
+			system("pause");
+			break;
+		}
+		case 0:{
+			//retornar ao menu principal
+			return -1;
+			break;
+		}
+	}
+}
+
+void controleMenuPrincipal(int opcao){	
+	switch(opcao){
+		case 1:{
+			do{
+				opcao=menuFunc();	
+			}while(controleMenuFunc(opcao)!=-1);
+			break;
+		}
+		case 2:{
+			do{
+				opcao=menuReunioes();
+			}while(opcao !=-1);
+			break;
+		}
+	}
+}
+
+int menuReunioes(int opcao){
+	do{
+		printf("\n-----------Menu de Reuniões------------\n\n1-Marcar Reunião\n2-Listar Reuniões Marcadas\n3-Consultar dados de uma reunião marcada\n4-Excluir reunião\n5-Verificar Lixeira de reuniões\n0-Retornar ao Menu Principal\nDigite a Opção: ");
+		scanf("%d",&opcao);
+	}while(opcao<0 || opcao>5);
+	return controleMenuReunioes (opcao);
+}
+
+int controleMenuReunioes(int opcao){
+	switch(opcao){
+		case 1:{
+			marcarReuniao();
+			break;
+		}
+		case 2:{
+			listarReunioes();
+			break;
+		}
+		case 3:{
+			consultarReuniao();
+			break;
+		}
+		/*
+		case 4:{
+			excluirReuniao();
+			break;
+		}
+		case 5:{
+			verificarLixeiraReuniao();
+			break;
+		}
+		*/
+		case 0:{
+			printf("Saiu");
+			return -1;
+		}
+	}
+}
+
+void marcarReuniao(){
+	struct reuniao reu;
+	reu.codigo=recebeCodReuniao();
+	recebeDadosReuniao(&reu);
+	incluiReuniao(reu);
+}
+void incluiReuniao(struct reuniao reu){
+	FILE *arq;
+	arq=fopen("reunioes.dat","ab");
+	if(arq == NULL){
+		printf("\nErro ao abrir o arquivo de reuniões.\n");
+		return;
+	}
+	fwrite(&reu,sizeof(reu),1,arq);
+	fclose(arq);
+}
+int recebeCodReuniao(){
+	int cod;
+	printf("Digite o Código da reunião: ");
+	scanf("%d",&cod);
+	return cod;
+}
+
+void recebeDadosReuniao(struct reuniao *reu){
+	int mat,cont=0;
+	char val;
+	fflush(stdin);
+	printf("Digite o Tema: ");
+	gets(reu->tema);
+	do{
+		reu->funcionarios[cont]=recebeMatFunc();
+		cont++;
+	}while(cont<2);
+	fflush(stdin);
+	printf("Digite o local da Reunião: ");
+	gets(reu->local);
+	printf("Digite o dia: ");	
+	scanf("%d",&(*reu).dia);
+	printf("Digite o mes: ");
+	scanf("%d",&(*reu).mes);
+	printf("Digite o ano: ");
+	scanf("%d",&(*reu).ano);
+	reu->deletado=' ';
+}
+
+void listarReunioes(void) {
+	struct reuniao reu;
+	FILE *arq;
+	arq = fopen("reunioes.dat", "rb");
+	if (arq == NULL) {
+		printf("Erro de abertura do arquivo!\n");
+		return;
+	}
+	while (fread(&reu, sizeof(reu), 1, arq))
+		if (reu.deletado != '*')
+			mostraReuDados(reu);
+	fclose(arq);
+}
+
+void mostraReuDados(struct reuniao reu){
+	printf("Código: %d\n Tema: %s\n Local: %s\n Data: %d/%d/%d\n", reu.codigo, reu.tema, reu.local, reu.dia, reu.mes, reu.ano);
+}
+
+void consultarReuniao(void) {
+	struct reuniao reu;
+	int idreu,achei=0;
+	FILE *arq;
+	arq = fopen("reunioes.dat", "rb");
+	if (arq == NULL) {
+		printf("Erro de abertura do arquivo!\n");
+		return;
+	}
+	idreu=recebeCodReuniao();
+	while (fread(&reu, sizeof(reu), 1, arq))
+		if (reu.deletado != '*' && idreu==reu.codigo){
+			printf("\n");
+			mostraReuDados(reu);
+			achei=1;
+		}
+		if(!achei){
+			printf("\nReunião não encontrada.");
+		}
+	fclose(arq);
+}
